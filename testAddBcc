@@ -1,0 +1,94 @@
+package org.apache.commons.mail;
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Properties;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
+public class EmailTest {
+	private static final String[] TEST_EMAILS = { "ab@bc.com", "a.b@c.org", "abcdefghijklmnopqrst@abcdefghijklmnopkrst.com.bd"};
+	private static final String[] TEST_EMAILS_EMPTY = {""};
+	private static final String[] TEST_EMAILS_NULL = null;
+	private static final String CONTENT = "content";
+	private static final String CONTENT_TYPE = "Content type";
+	private static final String FROM_ADDRESS = "From@Address.com";
+	private static final String SUBJECT = "subject";
+	private static final String CHARSET = "standard";
+	private static final String HOST_NAME = "host name";
+	private static final Date DATE = new Date();
+	private static final int SOCKET_CONNECTION_TIMEOUT = 1;
+	private static MimeMessage MESSAGE;
+	private static MimeMultipart EMAIL_BODY = new MimeMultipart();
+	private static final String SESSION = "Session";
+	private static Collection<InternetAddress> TO_LIST = new ArrayList<InternetAddress>();
+	private static Collection<InternetAddress> CC_LIST = new ArrayList<InternetAddress>();
+	private static Collection<InternetAddress> BCC_LIST = new ArrayList<InternetAddress>();
+	
+	
+	
+	
+	/* Concrete Email Class for testing */
+	private EmailConcrete email;
+	
+	@Before
+	public void setUpEmailTest() throws Exception {
+		
+		email = new EmailConcrete();
+		
+	    
+		
+	}
+	
+	@After
+	public void tearDownEmailTest() throws Exception{
+		
+	}
+	
+	/*
+	 * Test addBcc(String email) function
+	 */
+	@Test
+	public void testAddBcc() throws Exception {
+		Properties properties = new Properties();
+	    Session session = Session.getDefaultInstance(properties, email.authenticator);
+	    email.setMailSession(session);
+		email.addBcc(TEST_EMAILS);
+		assertEquals(3, email.getBccAddresses().size());
+	}
+	
+	/*
+	 * Test addBcc(String email =) function with empty email
+	 */
+	@Test(expected = EmailException.class)
+	public void testAddBccEmpty() throws Exception {
+		Properties properties = new Properties();
+	    Session session = Session.getDefaultInstance(properties, email.authenticator);
+	    email.setMailSession(session);
+		email.addBcc(TEST_EMAILS_EMPTY);
+	}
+	
+	/*
+	 * Test addBcc(String email =) function with null email
+	 */
+	@Test(expected = EmailException.class)
+	public void testAddBccNull() throws Exception {
+		Properties properties = new Properties();
+	    Session session = Session.getDefaultInstance(properties, email.authenticator);
+	    email.setMailSession(session);
+		email.addBcc(TEST_EMAILS_NULL);
+	}
+}
