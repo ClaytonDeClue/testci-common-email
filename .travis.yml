@@ -6,3 +6,5 @@ jdk:
 
 dist: trusty
 
+script: - mvn clean install 
+
